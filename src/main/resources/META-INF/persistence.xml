@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+             xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+    <persistence-unit name="cinema.persistence">
+
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+
+        <jta-data-source>java:jboss/datasources/zmw.datasource</jta-data-source>
+
+        <class>de.geeksession.entities.AbstractEntity</class>
+        <class>de.geeksession.entities.CinemaRoom</class>
+        <class>de.geeksession.entities.Movie</class>
+        <class>de.geeksession.entities.Timetable</class>
+
+        <validation-mode>NONE</validation-mode>
+
+        <properties>
+            <!-- <property name="hibernate.dialect" 							value="org.hibernate.dialect.PostgreSQLDialect"/>-->
+            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+            <!-- <property name="hibernate.show_sql" 						value="true"/> -->
+            <!-- <property name="hibernate.format_sql" 						value="true"/> -->
+            <!-- <property name="hibernate.use_sql_comments" 				value="true"/> -->
+            <!--             <property name="hibernate.connection.pool_size" value="5"/> -->
+            <!--             <property name="hibernate.cache.provider_class" value="net.sf.ehcache.hibernate.SingletonEhCacheProvider" /> -->
+            <!--             <property name="hibernate.cache.use_query_cache" value="true" /> -->
+            <!--             <property name="hibernate.cache.use_second_level_cache" value="true" /> -->
+
+        </properties>
+    </persistence-unit>
+</persistence>
