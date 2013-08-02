@@ -28,19 +28,6 @@
             <version>${version.scala}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.scala-lang</groupId>
-            <artifactId>scala-compiler</artifactId>
-            <version>${version.scala}</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.scala-lang</groupId>
-            <artifactId>scala-reflect</artifactId>
-            <version>${version.scala}</version>
-        </dependency>
-
        	<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>

@@ -2,9 +2,8 @@ package de.geeksession
 
 import org.joda.time.DateTime
 
-import scala.reflect.ClassTag
-
-// import scala.reflect.runtime.universe._
+// this is the needed import to provide classPath[..]
+import scala.reflect._
 
 trait BusinessObject
 case class A(text: String, number: Int) extends BusinessObject
@@ -12,7 +11,7 @@ case class B(content: String, float: Float) extends BusinessObject
 
 trait ServiceHelper[I] {
 
-  implicit var t : ClassTag[I]
+  protected implicit def t : ClassTag[I]
 
   protected var objects : List[I] = Nil
 
@@ -30,7 +29,7 @@ trait ServiceHelper[I] {
       case _ : String => println("it is a String")
       case _ : Long => println("it is a Long")
       case o : I => // TODO abstract type pattern T is unchecked since it is eliminated by erasure case o : T =>        ^
-        println(("%s: case o : T --> " format serviceName) + o)
+        println(("%s: case o : I --> " format serviceName) + o)
         incomingBusinessObject(o)
       case _ => println("something else...")
     }
@@ -54,7 +53,7 @@ trait ServiceHelper[I] {
 
 object ServiceA extends ServiceHelper[A] {
 
-  def t = classTag[A]
+  override protected def t = classTag[A]
 
   override val serviceName = "Service-A"
   override protected def perform(o: A) = println("ServiceA perform ---> %s" format o)
@@ -76,4 +75,6 @@ object Client extends App {
   ServiceA.incomingAnything(3L)
   ServiceA.incomingAnything(a);
   ServiceA.incomingAnything(b);
+  ServiceB.incomingAnything(a);
+  ServiceB.incomingAnything(b);
 }
