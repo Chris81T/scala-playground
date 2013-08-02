@@ -2,17 +2,23 @@ package de.geeksession
 
 import org.joda.time.DateTime
 
+import scala.reflect.ClassTag
+
+// import scala.reflect.runtime.universe._
+
 trait BusinessObject
 case class A(text: String, number: Int) extends BusinessObject
 case class B(content: String, float: Float) extends BusinessObject
 
-trait ServiceHelper[T] {
+trait ServiceHelper[I] {
 
-  protected var objects : List[T] = Nil
+  implicit var t : ClassTag[I]
+
+  protected var objects : List[I] = Nil
 
   import scala.collection.mutable.Map
-  protected val objectsMap = Map[Int, T]()
-  protected val anotherMap = Map[T, String]()
+  protected val objectsMap = Map[Int, I]()
+  protected val anotherMap = Map[I, String]()
 
   val serviceName : String
 
@@ -23,7 +29,7 @@ trait ServiceHelper[T] {
     val partial : PartialFunction[Any, Unit] = {
       case _ : String => println("it is a String")
       case _ : Long => println("it is a Long")
-      case o : T => // TODO abstract type pattern T is unchecked since it is eliminated by erasure case o : T =>        ^
+      case o : I => // TODO abstract type pattern T is unchecked since it is eliminated by erasure case o : T =>        ^
         println(("%s: case o : T --> " format serviceName) + o)
         incomingBusinessObject(o)
       case _ => println("something else...")
@@ -31,7 +37,7 @@ trait ServiceHelper[T] {
     partial(a)
   }
 
-  private def incomingBusinessObject(o: T) {
+  private def incomingBusinessObject(o: I) {
     println("incoming business object = %s" format o)
     objects = objects :+ o
     objectsMap += objects.size -> o
@@ -42,16 +48,22 @@ trait ServiceHelper[T] {
     perform(o)
   }
 
-  protected def perform(o: T)
+  protected def perform(o: I)
 
 }
 
 object ServiceA extends ServiceHelper[A] {
+
+  def t = classTag[A]
+
   override val serviceName = "Service-A"
   override protected def perform(o: A) = println("ServiceA perform ---> %s" format o)
 }
 
 object ServiceB extends ServiceHelper[B] {
+
+  def t = classTag[B]
+
   override val serviceName = "Service-B"
   override protected def perform(o: B) = println("ServiceB perform ---> %s" format o)
 }
